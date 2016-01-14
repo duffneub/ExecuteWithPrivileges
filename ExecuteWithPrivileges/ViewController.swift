@@ -8,12 +8,16 @@
 
 import Cocoa
 
+//========================================================================================
+// MARK: - ViewController
+//========================================================================================
 class ViewController: NSViewController {
   
-  // MARK: - IBOutlet
   @IBOutlet var console: NSTextView!
   
-  // MARK: - IBActions
+  //----------------------------------------------------------------------------------------
+  // userDidEnterCommand(sender:)
+  //----------------------------------------------------------------------------------------
   @IBAction func userDidEnterCommand(sender: NSTextField) {
     guard sender.stringValue != "" else { return }
     
@@ -30,8 +34,9 @@ class ViewController: NSViewController {
     }
   }
   
-  // MARK: - Executing Commands
-  
+  //----------------------------------------------------------------------------------------
+  // executeCommand(command:withArguments:)
+  //----------------------------------------------------------------------------------------
   private func executeCommand(command: String, withArguments: [String]) {
     self.clearConsole()
     
@@ -45,11 +50,14 @@ class ViewController: NSViewController {
     self.printToConsole(output)
   }
   
+  //----------------------------------------------------------------------------------------
+  // outputFromTask(launchPath:withArguments:) -> String
+  //----------------------------------------------------------------------------------------
   private func outputFromTask(launchPath launchPath: String, withArguments arguments: [String]) -> String {
     
-    let task = NSTask()
+    let task        = NSTask()
     task.launchPath = launchPath
-    task.arguments = arguments
+    task.arguments  = arguments
     
     let outPipe = NSPipe()
     let errPipe = NSPipe()
@@ -72,13 +80,17 @@ class ViewController: NSViewController {
     return output != "" ? output : error
   }
   
-  // MARK: - Printing to console
-  
+  //----------------------------------------------------------------------------------------
+  // printToConsole(output:)
+  //----------------------------------------------------------------------------------------
   private func printToConsole(output: String) {
     let attrString = NSAttributedString(string: "\(output)\n")
     self.console.textStorage?.appendAttributedString(attrString)
   }
   
+  //----------------------------------------------------------------------------------------
+  // clearConsole()
+  //----------------------------------------------------------------------------------------
   private func clearConsole() {
     self.console.string = ""
   }
